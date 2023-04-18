@@ -1,0 +1,56 @@
+---
+name: Update Hugo
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 5 * * 1-5' # https://crontab.guru/#0_5_*_*_1-5 "At 05:00 every day-of-week from Monday through Friday."
+  push: # for testing
+
+jobs:
+  update_hugo:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Extract current version
+        env:
+          file: .github/workflows/publish.yaml
+        run: |
+          set -o pipefail
+
+          CURRENT=$(yq -r '.jobs.build.env[]' ${{ env.file }})
+          echo "Current version of Hugo in publish.yaml is $CURRENT"
+          echo "current_version=$CURRENT" >> "$GITHUB_OUTPUT"
+
+          LATEST=$(curl -s -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/gohugoio/hugo/releases/latest" \
+            | jq -r '.tag_name')
+          LATEST_SEMVER="${LATEST#v}"
+          echo "Latest version of Hugo is $LATEST_SEMVER"
+          echo "latest_version=$LATEST_SEMVER" >> "$GITHUB_OUTPUT"
+
+          sed -i "s/HUGO_VERSION:.*/HUGO_VERSION: $LATEST_SEMVER" ${{ env.file }}
+          git diff
+
+      # - name: Create Pull Request
+      #   if: ${{ steps.git-source.outputs.git_tag != 'null' }}
+      #   uses: peter-evans/create-pull-request@v5
+      #   with:
+      #     token: ${{ github.token }}
+      #     branch: update-catalog-${{ matrix.source_file }}
+      #     delete-branch: true
+      #     committer: Gitops Bot <gitops@mediamarktsaturn.com>
+      #     author: Gitops Bot <gitops@mediamarktsaturn.com>
+      #     commit-message: "chore: Update GitRepository on ${{ matrix.source_file }} to ${{ steps.remote-catalog.outputs.version }}"
+      #     title: "chore: Update GitRepository on ${{ matrix.source_file }} to ${{ steps.remote-catalog.outputs.version }}"
+      #     body: |
+      #       New GitRepository version: ${{ steps.remote-catalog.outputs.version }}
+      #
+      #       ---
+      #       Changelog: ${{ steps.git-source.outputs.http_url }}/compare/${{ steps.git-source.outputs.git_tag }}...${{ steps.remote-catalog.outputs.version }}
+      #       Release: ${{ steps.git-source.outputs.http_url }}/releases/tag/${{ steps.remote-catalog.outputs.version }}
