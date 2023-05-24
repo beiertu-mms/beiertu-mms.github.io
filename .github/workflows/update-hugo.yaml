@@ -49,6 +49,7 @@ jobs:
           author: ${{ env.bot_name }}
           commit-message: ${{ env.message }}
           title: ${{ env.message }}
+          labels: dependencies
           body: |
             Bump [Hugo](${{ env.hugo_url }}) from ${{ steps.versions.outputs.current }} to ${{ steps.versions.outputs.latest }}
 
