@@ -1,10 +1,8 @@
----
 name: Update Hugo
 on:
   workflow_dispatch:
   schedule:
     - cron: '0 5 * * 1-5' # https://crontab.guru/#0_5_*_*_1-5 "At 05:00 every day-of-week from Monday through Friday."
-
 jobs:
   update_hugo:
     runs-on: ubuntu-latest
@@ -13,11 +11,9 @@ jobs:
       pull-requests: write
     env:
       file: .github/workflows/publish.yaml
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
       - name: Update Hugo
         id: versions
         run: |
@@ -39,7 +35,6 @@ jobs:
             echo "current=$CURRENT"
             echo "latest=$LATEST_SEMVER"
           } >> "$GITHUB_OUTPUT"
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         env:
@@ -47,6 +42,7 @@ jobs:
           message: "chore(action): bump hugo from ${{ steps.versions.outputs.current }} to ${{ steps.versions.outputs.latest }}"
           hugo_url: https://github.com/gohugoio/hugo
         with:
+          token: ${{ secrets.PAT }}
           branch: chore/action/update-hugo-version
           delete-branch: true
           committer: ${{ env.bot_name }}
@@ -59,4 +55,3 @@ jobs:
             ---
             Release: ${{ env.hugo_url }}/releases/tag/v${{ steps.versions.outputs.latest }}
             Changelog: ${{ env.hugo_url }}/compare/v${{ steps.versions.outputs.current }}...v${{ steps.versions.outputs.latest }}
-
