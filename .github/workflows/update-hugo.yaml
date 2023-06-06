@@ -45,6 +45,7 @@ jobs:
           token: ${{ secrets.PAT }}
           branch: chore/action/update-hugo-version
           delete-branch: true
+          reviewers: beiertu-mms
           committer: ${{ env.bot_name }}
           author: ${{ env.bot_name }}
           commit-message: ${{ env.message }}
