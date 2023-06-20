@@ -23,14 +23,17 @@ jobs:
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
+        env:
+          bot_name: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          delete-branch: true
           branch: chore/themes/update-sub-modules
+          delete-branch: true
+          reviewers: beiertu-mms
+          committer: ${{ env.bot_name }}
+          author: ${{ env.bot_name }}
           commit-message: 'chore(themes): update sub-modules'
           title: 'chore(themes): update sub-modules'
+          labels: dependencies
           body: |
             Update the [themes](https://github.com/beiertu-mms/beiertu-mms.github.io/tree/master/themes) submodules.
-          reviewers: beiertu-mms
-          assignees: beiertu-mms
-
