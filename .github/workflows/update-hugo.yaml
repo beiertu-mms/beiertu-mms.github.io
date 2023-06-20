@@ -1,3 +1,4 @@
+---
 name: Update Hugo
 on:
   workflow_dispatch:
@@ -14,6 +15,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Update Hugo
         id: versions
         run: |
@@ -35,6 +37,7 @@ jobs:
             echo "current=$CURRENT"
             echo "latest=$LATEST_SEMVER"
           } >> "$GITHUB_OUTPUT"
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         env:
@@ -42,7 +45,7 @@ jobs:
           message: "chore(action): bump hugo from ${{ steps.versions.outputs.current }} to ${{ steps.versions.outputs.latest }}"
           hugo_url: https://github.com/gohugoio/hugo
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           branch: chore/action/update-hugo-version
           delete-branch: true
           reviewers: beiertu-mms
