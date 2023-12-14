@@ -5,7 +5,7 @@
     "renovate"
   ],
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
   "dryRun": "full",
   "branchPrefix": "renovate/",
@@ -24,10 +24,11 @@
   "prConcurrentLimit": 10,
   "prHourlyLimit": 0,
   "enabledManagers": [
-    "regex"
+    "custom.regex"
   ],
-  "regexManagers": [
+  "customManagers": [
     {
+      "customType": "regex",
       "description": "Update Hugo version in GH action",
       "fileMatch": [
         ".*publish\\.yaml$"
