@@ -1,0 +1,42 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "labels": [
+    "dependencies",
+    "renovate"
+  ],
+  "extends": [
+    "config:base"
+  ],
+  "dryRun": "full",
+  "branchPrefix": "renovate/",
+  "username": "renovate[bot]",
+  "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
+  "onboarding": false,
+  "platform": "github",
+  "forkProcessing": "disabled",
+  "semanticCommits": "enabled",
+  "dependencyDashboard": false,
+  "suppressNotifications": [
+    "prIgnoreNotification"
+  ],
+  "rebaseWhen": "conflicted",
+  "branchConcurrentLimit": 0,
+  "prConcurrentLimit": 10,
+  "prHourlyLimit": 0,
+  "enabledManagers": [
+    "regex"
+  ],
+  "regexManagers": [
+    {
+      "description": "Update Hugo version in GH action",
+      "fileMatch": [
+        ".*publish\\.yaml$"
+      ],
+      "matchStrings": [
+        "HUGO_VERSION: (?<currentValue>.*?)"
+      ],
+      "depNameTemplate": "gohugoio/hugo",
+      "datasourceTemplate": "github-releases"
+    }
+  ]
+}
