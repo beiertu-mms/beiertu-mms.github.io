@@ -71,8 +71,6 @@ jobs:
 
       - run: |
           {
-            echo "result<<EOF"
             echo "## Deployment information"
             echo "Deploy to: ${{ steps.deployment.outputs.page_url }}"
-            echo "EOF"
           } >> "$GITHUB_STEP_SUMMARY"
