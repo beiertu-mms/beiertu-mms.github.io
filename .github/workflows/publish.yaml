@@ -70,8 +70,9 @@ jobs:
         uses: actions/deploy-pages@v3
 
       - run: |
-          IFS='' read -r -d '' "$GITHUB_STEP_SUMMARY" <<"EOF"
-          \## Deployment information
-
-          Url: ${{ steps.deployment.outputs.page_url }}
-          EOF
+          {
+            echo "result<<EOF"
+            echo "## Deployment information"
+            echo "Deploy to: ${{ steps.deployment.outputs.page_url }}"
+            echo "EOF"
+          } >> "$GITHUB_STEP_SUMMARY"
