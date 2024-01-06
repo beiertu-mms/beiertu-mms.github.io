@@ -1,0 +1,87 @@
+---
+name: Do updates
+"on":
+  schedule:
+    - cron: '0 7 * * 1' # At 07:00 on Monday
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update_themes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Update submodules
+        run: |
+          git submodule update --recursive
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        env:
+          bot_name: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: chore/themes/update-sub-modules
+          delete-branch: true
+          reviewers: beiertu-mms
+          committer: ${{ env.bot_name }}
+          author: ${{ env.bot_name }}
+          commit-message: 'chore(themes): update sub-modules'
+          title: 'chore(themes): update sub-modules'
+          labels: dependencies
+          body: |
+            Update the [themes](https://github.com/beiertu-mms/beiertu-mms.github.io/tree/master/themes) submodules.
+
+  update_hugo:
+    runs-on: ubuntu-latest
+    env:
+      file: .github/workflows/publish.yaml
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update Hugo
+        id: versions
+        run: |
+          set -o pipefail
+          CURRENT=$(yq -r '.jobs.build.env[]' ${{ env.file }})
+          echo "Current version of Hugo in publish.yaml is $CURRENT"
+          LATEST=$(curl -s -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/gohugoio/hugo/releases/latest" \
+            | jq -r '.tag_name')
+          LATEST_SEMVER="${LATEST#v}"
+          echo "Latest version of Hugo is $LATEST_SEMVER"
+          sed -i "s/HUGO_VERSION:.*/HUGO_VERSION: $LATEST_SEMVER/" "${{ env.file }}"
+          git diff
+          {
+            echo "current=$CURRENT"
+            echo "latest=$LATEST_SEMVER"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        env:
+          bot_name: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          message: "chore(action): bump hugo from ${{ steps.versions.outputs.current }} to ${{ steps.versions.outputs.latest }}"
+          hugo_url: https://github.com/gohugoio/hugo
+        with:
+          token: ${{ secrets.PAT }} # to be able to update a workflow
+          branch: chore/action/update-hugo-version
+          delete-branch: true
+          committer: ${{ env.bot_name }}
+          author: ${{ env.bot_name }}
+          commit-message: ${{ env.message }}
+          title: ${{ env.message }}
+          labels: dependencies
+          body: |
+            Bump [Hugo](${{ env.hugo_url }}) from ${{ steps.versions.outputs.current }} to ${{ steps.versions.outputs.latest }}
+            ---
+            Release: ${{ env.hugo_url }}/releases/tag/v${{ steps.versions.outputs.latest }}
+            Changelog: ${{ env.hugo_url }}/compare/v${{ steps.versions.outputs.current }}...v${{ steps.versions.outputs.latest }}
