@@ -26,9 +26,8 @@
   "enabledManagers": [
     "regex"
   ],
-  "customManagers": [
+  "regexManagers": [
     {
-      "customType": "regex",
       "description": "Update Hugo version in GH action",
       "fileMatch": [
         ".*publish\\.yaml$"
