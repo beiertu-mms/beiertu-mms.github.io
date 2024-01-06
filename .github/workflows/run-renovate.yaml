@@ -3,6 +3,12 @@ name: 'Run Renovate'
 "on":
   schedule:
     - cron: '0 6 * * 1-5' # https://crontab.guru/#0_6_*_*_1-5
+  push:
+    branches:
+      - "master"
+    paths:
+      - ".github/renovate.json"
+      - ".github/workflows/run-renovate.yaml"
   workflow_dispatch:
 
 jobs:
