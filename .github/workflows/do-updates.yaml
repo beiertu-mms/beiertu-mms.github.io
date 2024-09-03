@@ -23,7 +23,7 @@ jobs:
           git submodule update --recursive
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         env:
           bot_name: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
         with:
@@ -66,7 +66,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         env:
           bot_name: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
           message: "chore(action): bump hugo from ${{ steps.versions.outputs.current }} to ${{ steps.versions.outputs.latest }}"
