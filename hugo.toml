@@ -103,7 +103,8 @@ disableHugoGeneratorInject = false
 
 [languages]
   [languages.en]
-    subtitle  = "Hello Friend NG Theme"
-    weight    = 1
-    copyright = '<a href="https://github.com/beiertu-mms/beiertu-mms.github.io/blob/master/LICENSE" target="_blank" rel="noopener">MIT</a>'
+    [languages.en.params]
+      subtitle  = "Hello Friend NG Theme"
+      weight    = 1
+      copyright = '<a href="https://github.com/beiertu-mms/beiertu-mms.github.io/blob/master/LICENSE" target="_blank" rel="noopener">MIT</a>'
 
