@@ -83,7 +83,7 @@ disableHugoGeneratorInject = false
 
   [params.logo]
     logoMark     = ">"
-    logoText     = "$ cd ~"
+    logoText     = "$ cd "
     logoHomeLink = "/"
 
   [params.commento]
