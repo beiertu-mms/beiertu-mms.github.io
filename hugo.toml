@@ -6,7 +6,6 @@ theme = "hello-friend-ng"
 PygmentsCodeFences = true
 PygmentsStyle = "monokai"
 
-paginate  = 10
 rssLimit  = 10
 copyright = "This work is licensed under the MIT License." # This message is only used by the RSS template.
 
@@ -35,6 +34,11 @@ disableHugoGeneratorInject = false
 
 [params.author]
   name = "Tung Beier"
+
+[pagination]
+  disableAliases = false
+  pagerSize = 20
+  path = 'page'
 
 [blackfriday]
   hrefTargetBlank = true
