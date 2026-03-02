@@ -6,7 +6,6 @@ theme = "hello-friend-ng"
 PygmentsCodeFences = true
 PygmentsStyle = "monokai"
 
-rssLimit  = 10
 copyright = "This work is licensed under the MIT License." # This message is only used by the RSS template.
 
 archetypeDir = "archetypes"
@@ -29,16 +28,17 @@ disableSitemap = false
 disable404     = false
 disableHugoGeneratorInject = false
 
-[permalinks]
-  posts = "/posts/:year/:month/:title/"
-
-[params.author]
-  name = "Tung Beier"
-
 [pagination]
   disableAliases = false
   pagerSize = 20
   path = 'page'
+
+[services]
+  [services.rss]
+      limit = 42
+
+[permalinks]
+  posts = "/posts/:year/:month/:title/"
 
 [blackfriday]
   hrefTargetBlank = true
@@ -66,10 +66,12 @@ disableHugoGeneratorInject = false
   enableGlobalLanguageMenu = true
   customCSS = []
   customJS  = []
-  justifyContent = true
+
+  [params.author]
+    name = "Tung Beier"
 
   [params.footer]
-    trademark = true
+    trademark = 2026
     rss = false
     copyright = true
     author = true
