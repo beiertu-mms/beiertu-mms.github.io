@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: true
 
@@ -23,7 +23,7 @@ jobs:
           git submodule update --recursive
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
         env:
           bot_name: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
         with:
@@ -45,7 +45,7 @@ jobs:
       file: .github/workflows/publish.yaml
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Update Hugo
         id: versions
@@ -66,7 +66,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
         env:
           bot_name: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
           message: "chore(action): bump hugo from ${{ steps.versions.outputs.current }} to ${{ steps.versions.outputs.latest }}"
